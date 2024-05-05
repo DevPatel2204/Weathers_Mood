@@ -9,13 +9,24 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
+        @StateObject var locationManager = LocationManager()
+        
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            
+            if let location = locationManager.location{
+                Text("Your coordinates are: \(location.longitude),\(location.latitude)")
+            }else{
+                if locationManager.isLoading{
+                    LoadingView()
+                }else{
+                    WelcomeView()
+                        .environmentObject(locationManager)
+                }
+            }
+            
         }
-        .padding()
+        .background(Color(hue: 0.702, saturation: 0.909, brightness: 0.686))
+        .preferredColorScheme(.dark)
     }
 }
 
